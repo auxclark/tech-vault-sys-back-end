@@ -5,6 +5,7 @@ const cors = require('cors')
 const requireAuth = require('./middleware/requireAuth')
 const { addItem, fetchAllItems, fetchItem, deleteItem, updateItem } = require('./controllers/ItemsControllers')
 const { signUp, login, logout, checkAuth, fetchUsers, editUser, deleteUser, getUserById } = require('./controllers/usersController')
+const { addHistory, getHistory, getHistoryById, deleteHistory } = require('./controllers/historyController')
 
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
@@ -14,7 +15,7 @@ const app = express()
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-    origin: true,
+    origin: process.env.FRONTEND_URL || true,
     credentials: true
 }))
 
@@ -73,6 +74,21 @@ app.patch('/users/:id', editUser)
 
 // Delete user
 app.delete('/users/:id', deleteUser)
+
+
+// Routes for History //
+
+// ADD History
+app.post('/history', addHistory)
+
+// GET ALL History
+app.get('/history', getHistory)
+
+// GET History by ID
+app.get('/history/:id', getHistoryById)
+
+// DELETE History
+app.delete('/history/:id', deleteHistory)
 
 
 // middlewares
